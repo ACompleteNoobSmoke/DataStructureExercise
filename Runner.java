@@ -30,5 +30,8 @@ public class Runner{
         list.show();
         System.out.println();
 
+        list.deleteAt(2);
+        list.show();
+
     }
 }
