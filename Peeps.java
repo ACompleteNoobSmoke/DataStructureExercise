@@ -1,6 +1,8 @@
 public class Peeps{
     private String name;
-    private String job;
+    private int age;
+    private String hobby;
+    private Animal pet;
 
     public void setName(String name){
         this.name = name;
@@ -9,16 +11,34 @@ public class Peeps{
         return name;
     }
 
-    public void setJob(String job){
-        this.job = job;
+    public void setAge(int age){
+        this.age = age;
+    }
+    public int getAge(){
+        return age;
     }
 
-    public String getJob(){
-        return job;
+    public void setHobby(String hobby){
+        this.hobby = hobby;
+    }
+    public String getHobby(){
+        return hobby;
     }
 
-    public String toString(){
-        return "My name is " + name + " and I hope to be a " + job + " one day.";
+    public void setPet(Animal pet){
+        this.pet = pet;
+    }
+    public Animal getPet(){
+        return pet;
     }
 
+    public String Profile(){
+        return "My name is " + name + "\n" +
+                "I am " + age + " years old\n" +
+                "My favorite hobby is " + hobby + "\n" +
+                "I own a " + pet.getPetType() + " and its name is " + pet.getPetName() + 
+                ".\n\n"; 
+    }
+
+    
 }
