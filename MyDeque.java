@@ -17,7 +17,7 @@ public class MyDeque {
     }
 
     public boolean isFull() {
-        return ((front == 0 && rear == cap - 1) && (front == cap + 1));
+        return ((front == 0 && rear == cap - 1) || (front == cap + 1));
     }
 
     public void addFront(int x) {
