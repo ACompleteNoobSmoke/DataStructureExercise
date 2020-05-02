@@ -1,89 +1,80 @@
-import java.util.InputMismatchException;
-import java.util.Scanner;
-
 public class TreeImplementation extends MyBinaryTree {
 
-    static Scanner scan = new Scanner(System.in);
-
-    public int MainMenu() {
-        int choice = 0;
-        while (choice <= 0 || choice > 5) {
-            try {
-                System.out.println("Main Menu");
-                System.out.println("1. Add New Student");
-                System.out.println("2. Search Student");
-                System.out.println("3. Remove Student");
-                System.out.println("4. View All Students");
-                System.out.println("5. Exit");
-                System.out.print("\nAction: ");
-                choice = scan.nextInt();
-            } catch (InputMismatchException e) {
-                scan.nextLine();
-            }
+    public int mainMenu() {
+        int menuChoice = 0;
+        while (menuChoice <= 0 || menuChoice > 5) {
+            System.out.println("*** Main Menu ***");
+            System.out.println("1. New Student");
+            System.out.println("2. Search Student");
+            System.out.println("3. Remove Student");
+            System.out.println("4. View All Student");
+            System.out.println("5. Exit");
+            System.out.print("\nAction: ");
+            menuChoice = InputMethodsStudent.getInt();
         }
-        scan.nextLine();
-        return choice;
+        return menuChoice;
     }
 
-    public void createNewStudent() {
-        System.out.println("Enter New Student");
-        String name = InputMethods.inputName();
-        String major = InputMethods.inputMajor();
-        int id = InputMethods.inputID();
-        double gradePercentage = InputMethods.inputGradePerecentage();
-        char gradeLetter = InputMethods.inputGradeLetter(gradePercentage);
-        String gradeStatus = InputMethods.inputGradeStatus(gradeLetter);
-        Students newStudent = new Students(name, major, id, gradePercentage, gradeLetter, gradeStatus);
+    public void addNewStudent() {
+        System.out.println("*** Register New Student ***");
+        String name = InputMethodsStudent.inputName();
+        int id = InputMethodsStudent.inputID();
+        String major = InputMethodsStudent.inputMajor();
+        double grade = InputMethodsStudent.inputGradePerecentage();
+        char gradeLetter = InputMethodsStudent.inputGradeLetter(grade);
+        String gradeStatus = InputMethodsStudent.inputGradeStatus(gradeLetter);
+        Students newStudent = new Students(name, major, id, grade, gradeLetter, gradeStatus);
         addNode(newStudent);
     }
 
-    public void searchStudent() {
-        System.out.println("Search Student");
-        int id = InputMethods.inputID();
-        Node found = findNode(id);
-        System.out.println("Student Information");
-        System.out.println(found == null ? "Student Not Found" : found);
+    public void searchorremoveStudent(int choice) {
+        System.out.println("*** Search Student ***\n");
+        int searchID = InputMethodsStudent.inputID();
+        Node searched = findNode(searchID);
+        System.out.println(searched == null ? "Student Not Found\n" : searched);
+
+        if (choice == 3) {
+            removeNode(searchID);
+            System.out.println("\nStudent Removed From Database!\n");
+        }
     }
 
-    public void removeStudent() {
-        System.out.println("Remove Student");
-        int id = InputMethods.inputID();
-        boolean studentRemoved = removeNode(id);
-        System.out.println((studentRemoved) ? "Student Removed" : "Student Not Found");
+    public void viewAll() {
+        System.out.println("*** All Students ***\n");
+        inOrderTraverseTree(root);
     }
 
-    public void viewAllStudents() {
-        System.out.println("All Students");
-        reverseOrderTreeTraversal(root);
-        System.out.println("Total Students: " + getTreeSize());
+    public void closeProgram() {
+        System.out.println("Closing Program...");
+        InputMethodsStudent.closeScanner();
+        System.exit(0);
     }
 
-    public void options(int choice) {
-        switch (choice) {
+    public void switchCases() {
+        int menuPick = mainMenu();
+        switch (menuPick) {
             case 1:
-                createNewStudent();
+                addNewStudent();
                 break;
             case 2:
-                searchStudent();
+                searchorremoveStudent(menuPick);
                 break;
             case 3:
-                removeStudent();
+                searchorremoveStudent(menuPick);
                 break;
             case 4:
-                viewAllStudents();
+                viewAll();
                 break;
             case 5:
-                System.out.println("Closing...\n");
-                scan.close();
-                InputMethods.closeScanner();
-                System.exit(0);
+                closeProgram();
         }
     }
 
     public static void main(String[] args) {
         TreeImplementation ti = new TreeImplementation();
         while (true) {
-            ti.options(ti.MainMenu());
+            ti.switchCases();
         }
     }
+
 }

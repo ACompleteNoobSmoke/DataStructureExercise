@@ -5,6 +5,17 @@ public class InputMethodsStudent {
 
     static Scanner scan = new Scanner(System.in);
 
+    public static int getInt() {
+        int newInt = 0;
+        try {
+            newInt = scan.nextInt();
+            scan.nextLine();
+        } catch (InputMismatchException e) {
+            scan.nextLine();
+        }
+        return newInt;
+    }
+
     public static String inputName() {
         String name = "";
         while (name.isEmpty()) {

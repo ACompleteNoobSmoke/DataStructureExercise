@@ -1,5 +1,4 @@
 public class MyBinaryTree {
-
     Node root;
 
     public void addNode(Students newStudent) {
@@ -9,12 +8,12 @@ public class MyBinaryTree {
             root = newNode;
         } else {
             Node focusNode = root;
-            Node parent;
+            Node parent = root;
 
             while (true) {
                 parent = focusNode;
 
-                if (newStudent.getGradePercentage() < focusNode.getStudent().getGradePercentage()) {
+                if (newStudent.getID() < focusNode.getStudent().getID()) {
                     focusNode = focusNode.leftChild;
 
                     if (focusNode == null) {
@@ -35,11 +34,12 @@ public class MyBinaryTree {
         }
     }
 
-    public Node findNode(int id) {
+    public Node findNode(int StudentID) {
         Node searchNode = root;
 
-        while (id != searchNode.getStudent().getID()) {
-            if (id < searchNode.getStudent().getID()) {
+        while (StudentID != searchNode.getStudent().getID()) {
+
+            if (StudentID < searchNode.getStudent().getID()) {
                 searchNode = searchNode.leftChild;
             } else {
                 searchNode = searchNode.rightChild;
@@ -64,24 +64,23 @@ public class MyBinaryTree {
             focusNode = focusNode.leftChild;
         }
 
-        if (replacement != replacedNode.rightChild) {
+        while (replacement != replacedNode.rightChild) {
             replacementParent.leftChild = replacement.rightChild;
             replacement.rightChild = replacedNode.rightChild;
         }
 
         return replacement;
-
     }
 
-    public boolean removeNode(int id) {
+    public boolean removeNode(int StudentID) {
         Node focusNode = root;
         Node parent = root;
         boolean isItALeftChild = true;
 
-        while (id != focusNode.getStudent().getID()) {
+        while (StudentID != focusNode.getStudent().getID()) {
             parent = focusNode;
 
-            if (id < focusNode.getStudent().getID()) {
+            if (StudentID < focusNode.getStudent().getID()) {
                 focusNode = focusNode.leftChild;
             } else {
                 isItALeftChild = false;
@@ -119,7 +118,7 @@ public class MyBinaryTree {
             } else if (isItALeftChild) {
                 parent.leftChild = focusNode.leftChild;
             } else {
-                parent.rightChild = focusNode.rightChild;
+                parent.rightChild = focusNode.leftChild;
             }
         }
 
@@ -140,59 +139,51 @@ public class MyBinaryTree {
         return true;
     }
 
-    public void inOrderTreeTraversal(Node focusNode) {
+    public void inOrderTraverseTree(Node focusNode) {
         if (focusNode != null) {
-            inOrderTreeTraversal(focusNode.leftChild);
+            inOrderTraverseTree(focusNode.leftChild);
             System.out.println(focusNode);
-            inOrderTreeTraversal(focusNode.rightChild);
+            inOrderTraverseTree(focusNode.rightChild);
         }
     }
 
-    public void preOrderTreeTraversal(Node focusNode) {
+    public void preOrderTraverseTree(Node focusNode) {
         if (focusNode != null) {
             System.out.println(focusNode);
-            preOrderTreeTraversal(focusNode.leftChild);
-            preOrderTreeTraversal(focusNode.righChild);
+            preOrderTraverseTree(focusNode.leftChild);
+            preOrderTraverseTree(focusNode.rightChild);
         }
     }
 
-    public void postOrderTreeTraversal(Node focusNode) {
+    public void postOrderTraverseTree(Node focusNode) {
         if (focusNode != null) {
-            postOrderTreeTraversal(focusNode.leftChild);
-            postOrderTreeTraversal(focusNode.rightChild);
+            postOrderTraverseTree(focusNode.leftChild);
+            postOrderTraverseTree(focusNode.rightChild);
             System.out.println(focusNode);
         }
     }
 
-    public void reverseOrderTreeTraversal(Node focusNode) {
-        if (focusNode != null) {
-            reverseOrderTreeTraversal(focusNode.rightChild);
-            System.out.println(focusNode);
-            reverseOrderTreeTraversal(focusNode.leftChild);
+    public int getSize() {
+        if (root != null) {
+            return root.getSize();
         }
+
+        return 0;
     }
 
-    public int getTreeSize() {
-        if (root == null) {
-            return 0;
+    public int getHeight() {
+        if (root != null) {
+            return root.getHeight() - 1;
         }
 
-        return root.getSize();
+        return 0;
     }
 
-    public int getTreeHeight() {
-        if (root == null) {
-            return 0;
+    public int getDepth() {
+        if (root != null) {
+            return root.getDepth();
         }
 
-        return root.getHeight() - 1;
-    }
-
-    public int getTreeDepth() {
-        if (root == null) {
-            return 0;
-        }
-
-        return root.getDepth();
+        return 0;
     }
 }

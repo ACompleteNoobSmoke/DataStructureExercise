@@ -1,8 +1,7 @@
 public class Node {
-
-    Students newStudent;
-    Node leftChild;
     Node rightChild;
+    Node leftChild;
+    Students newStudent;
 
     public Node(Students newStudent) {
         this.newStudent = newStudent;
@@ -12,19 +11,26 @@ public class Node {
         return newStudent;
     }
 
+    public String toString() {
+        return "Name: " + newStudent.getName() + "\n" + "ID#: " + newStudent.getID() + "\n" + "Major: "
+                + newStudent.getMajor() + "\n" + "Grade(%): " + newStudent.getGradePercentage() + "\n"
+                + "Grade(A - F): " + newStudent.getGradeLetter() + "\n" + "Status: " + newStudent.getGradeStatus()
+                + "\n\n";
+    }
+
     public int getSize() {
-        int leftSize = 0;
-        int rightSize = 0;
+        int left = 0;
+        int right = 0;
 
         if (leftChild != null) {
-            leftSize = leftChild.getSize();
+            left = leftChild.getSize();
         }
 
         if (rightChild != null) {
-            rightSize = rightChild.getSize();
+            right = rightChild.getSize();
         }
 
-        return 1 + leftSize + rightSize;
+        return 1 + left + right;
     }
 
     public int getHeight() {
@@ -42,24 +48,18 @@ public class Node {
         return 1 + Math.max(leftHeight, rightHeight);
     }
 
-    public int getDepth(){
+    public int getDepth() {
         int leftDepth = 0;
         int rightDepth = 0;
 
-        if(leftChild != null){
+        if (leftChild != null) {
             leftDepth = leftChild.getDepth();
         }
 
-        if(rightChild != null){
-            rightDepth = rightChild.getDepth():
+        if (rightChild != null) {
+            rightDepth = rightChild.getDepth();
         }
 
         return 1 + Math.max(leftDepth, rightDepth);
-    }
-
-    public String toString() {
-        String studentinfo = newStudent.toString();
-
-        return studentinfo;
     }
 }
