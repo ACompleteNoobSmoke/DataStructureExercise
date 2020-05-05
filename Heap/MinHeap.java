@@ -1,13 +1,13 @@
 public class MinHeap {
 
     private int capacity;
-    public int size;
-    int[] item;
+    private int size;
+    PatientInLine[] newPatient;
 
     public MinHeap(int capacity) {
         this.capacity = capacity;
         this.size = 0;
-        this.item = new int[capacity];
+        newPatient = new PatientInLine[capacity];
     }
 
     public int getLeftChildIndex(int parentIndex) {
@@ -35,15 +35,15 @@ public class MinHeap {
     }
 
     public int leftChild(int index) {
-        return item[getLeftChildIndex(index)];
+        return newPatient[getLeftChildIndex(index)].getPriority();
     }
 
     public int rightChild(int index) {
-        return item[getRightChildIndex(index)];
+        return newPatient[getRightChildIndex(index)].getPriority();
     }
 
     public int parent(int index) {
-        return item[getParentIndex(index)];
+        return newPatient[getParentIndex(index)].getPriority();
     }
 
     public boolean isEmpty() {
@@ -54,75 +54,95 @@ public class MinHeap {
         return size == capacity;
     }
 
-    public void swap(int indexOne, int indexTwo) {
-        int temp = item[indexOne];
-        item[indexOne] = item[indexTwo];
-        item[indexTwo] = temp;
-    }
-
     public void ensureCapacity() {
         if (isFull()) {
-            int newArray[] = new int[capacity * 2];
+            PatientInLine[] newArray = new PatientInLine[capacity * 2];
             for (int i = 0; i < size; i++) {
-                newArray[i] = item[i];
+                newArray[i] = newPatient[i];
             }
-            item = newArray;
+            newPatient = newArray;
+            capacity *= 2;
         }
     }
 
-    public void heapifyUp() {
+    public void swap(int indexOne, int indexTwo) {
+        if (!isEmpty()) {
+            PatientInLine temp = newPatient[indexOne];
+            newPatient[indexOne] = newPatient[indexTwo];
+            newPatient[indexTwo] = temp;
+            return;
+        }
+    }
+
+    public void heapifyUP() {
         int index = size - 1;
-        while (hasParent(index) && parent(index) > item[index]) {
+        while (hasParent(index) && parent(index) > newPatient[index].getPriority()) {
             swap(getParentIndex(index), index);
             index = getParentIndex(index);
         }
     }
 
-    public void heapifyDown() {
+    public void heapifyDOWN() {
         int index = 0;
-
         while (hasLeftChild(index)) {
-            int smallChildIndex = getLeftChildIndex(index);
+            int smallerChildIndex = getLeftChildIndex(index);
 
             if (hasRightChild(index) && rightChild(index) < leftChild(index)) {
-                smallChildIndex = getRightChildIndex(index);
+                smallerChildIndex = getRightChildIndex(index);
             }
 
-            if (item[index] < item[smallChildIndex]) {
+            if (newPatient[index].getPriority() < newPatient[smallerChildIndex].getPriority()) {
                 break;
             } else {
-                swap(index, smallChildIndex);
+                swap(index, smallerChildIndex);
             }
 
-            index = smallChildIndex;
+            index = smallerChildIndex;
+
         }
     }
 
-    public void add(int newItem) {
+    public void add(PatientInLine newPeep) {
         ensureCapacity();
-        item[size] = newItem;
+        newPatient[size] = newPeep;
         size++;
-        heapifyUp();
+        heapifyUP();
     }
 
-    public int poll() {
+    public PatientInLine poll() {
         if (isEmpty()) {
-            System.out.println("Empty");
+            return null;
         }
 
-        int removedItem = item[0];
-        item[0] = item[size - 1];
+        PatientInLine polled = newPatient[0];
+        newPatient[0] = newPatient[size - 1];
         size--;
-        heapifyDown();
-        return removedItem;
+        heapifyDOWN();
+        return polled;
     }
 
-    public int peek() {
+    public PatientInLine peek() {
         if (isEmpty()) {
-            System.out.println("Empty");
+            return null;
         }
 
-        return item[0];
+        return newPatient[0];
+    }
+
+    public PatientInLine search(String name) {
+        if (isEmpty()) {
+            return null;
+        }
+
+        PatientInLine foundPatient = null;
+        for (int i = 0; i < size; i++) {
+            if (newPatient[i].getPatientName().equalsIgnoreCase(name)) {
+                foundPatient = newPatient[i];
+                break;
+            }
+        }
+
+        return foundPatient;
     }
 
     public void printAll() {
@@ -131,10 +151,17 @@ public class MinHeap {
             return;
         }
 
-        for (int i = 0; i < size; i++) {
-            System.out.print(item[i] + " ");
+        for (PatientInLine printPatient : newPatient) {
+            System.out.println(printPatient);
         }
+    }
 
+    public PatientInLine[] getPatientArray() {
+        return newPatient;
+    }
+
+    public int getSize() {
+        return size;
     }
 
 }
