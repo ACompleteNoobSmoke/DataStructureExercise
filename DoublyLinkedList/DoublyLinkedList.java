@@ -40,9 +40,11 @@ public class DoublyLinkedList {
     }
 
     public void insertAt(int index, Music newMusic) {
-        if (isEmpty()) {
+        if (isEmpty() || index == 1) {
             insertHead(newMusic);
-        } else if (Head.getNext() == null || index == 1) {
+        } else if (Head.getNext() == null) {
+            insertTail(newMusic);
+        } else if (index > size) {
             insertTail(newMusic);
         } else {
             DoublyNode current = Head;
@@ -50,10 +52,6 @@ public class DoublyLinkedList {
 
             for (int i = 1; i < index - 1; i++) {
                 current = current.getNext();
-            }
-
-            if (current.getNext() == null) {
-                insertTail(newMusic);
             }
 
             newNode.setPrev(current);
@@ -87,7 +85,7 @@ public class DoublyLinkedList {
             DoublyNode current = Head;
 
             while (current.getNext() != null) {
-                current = curren.getNext();
+                current = current.getNext();
             }
             current.getPrev().setNext(null);
             current.setPrev(null);
@@ -95,11 +93,14 @@ public class DoublyLinkedList {
         }
     }
 
-    public void removeAt(int index) {
+    public boolean removeAt(int index) {
         if (isEmpty()) {
             System.out.println("Empty");
-        } else if (getSize() == 1 && index == 1) {
+            return false;
+        } else if (getSize() == 1 || index == 1) {
             removeHead();
+        } else if (index == size) {
+            removeTail();
         } else {
             DoublyNode current = Head;
 
@@ -107,15 +108,13 @@ public class DoublyLinkedList {
                 current = current.getNext();
             }
 
-            if (current.getNext() == null) {
-                removeTail();
-            }
-
             current.getNext().getNext().setPrev(current);
             current.setNext(current.getNext().getNext());
             size--;
 
         }
+
+        return true;
     }
 
     public void peekHead() {
@@ -149,11 +148,11 @@ public class DoublyLinkedList {
         } else {
             DoublyNode current = Head;
 
-            for (int i = 0; i < size; i++) {
+            for (int i = 0; i <= size - 1; i++) {
                 System.out.println(current);
                 current = current.getNext();
             }
-            System.out.println(current);
+
         }
     }
 
