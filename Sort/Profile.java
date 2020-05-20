@@ -34,8 +34,16 @@ public class Profile {
         this.gender = gender;
     }
 
-    public ExerciseLogs[] getExercises() {
+    public WeightWatchers[] getExercises() {
         return exercises;
+    }
+
+    public void setExercises(int plannedExercise) {
+        exercises = new WeightWatchers[plannedExercise];
+    }
+
+    public void saveExerciseLog(int newAmount, WeightWatchers newLog) {
+        exercises[newAmount] = newLog;
     }
 
     public String profileMenu() {

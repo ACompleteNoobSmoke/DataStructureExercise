@@ -17,13 +17,52 @@ public class ExerciseLogs {
 
     public void createPlan(Profile profile) {
         System.out.println("*** Create Plan ***");
-        System.out.print("Current Weight: ");
         double currentWeight = 0;
-        while(currentWeight <= 0 || )
+        while (currentWeight <= 0 || currentWeight >= 1000) {
+            System.out.print("Current Weight: ");
+            currentWeight = InputMethods.getDouble();
+        }
+        double goalWeight = 0;
+        while (goalWeight <= 0 || goalWeight >= currentWeight) {
+            System.out.print("Goal Weight: ");
+            goalWeight = InputMethods.getDouble();
+        }
+
+        int weeks = getWeeks();
+        int plannedExercises = weeks * 3;
+        profile.setExercises(plannedExercises);
+        WeightWatchers newPlan = new WeightWatchers();
+        newPlan.setCurrentWeight(currentWeight);
+        newPlan.setGoalWeight(goalWeight);
+        profile.saveExerciseLog(0, newPlan);
+        System.out.println("Planned Saved!!\n");
     }
 
-    public int menu() {
-        System.out.println("*** Main Menu ***");
-        System.out.println()
+    public int getWeeks() {
+        int weeks = 0;
+        while (weeks <= 0 || weeks > 4) {
+            System.out.println("Duration Of Plan");
+            System.out.println("1. 3 Weeks");
+            System.out.println("2. 6 Weeks");
+            System.out.println("3. 9 Weeks");
+            System.out.println("4. 12 Weeks");
+            weeks = InputMethods.getInt();
+        }
+        return weeks;
     }
+
+    public int menu(Profile profile) {
+        int pick = 0;
+        while (pick <= 0 || pick > 4) {
+            System.out.println("*** Main Menu ***");
+            profile.profileMenu();
+            System.out.println("1. View Plan");
+            System.out.println("2. New Log");
+            System.out.println("3. View Logs");
+            System.out.println("4. Exit");
+            pick = InputMethods.getInt();
+        }
+        return pick;
+    }
+
 }
